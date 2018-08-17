@@ -40,7 +40,7 @@ namespace Espeon
                 .AddModule<Commands>()
                 .BuildCommandService();
 
-           _ = Task.Run(async () => { await client.RunAsync(); });
+            _ = Task.Run(async () => { await client.RunAsync(); });
 
             Console.WriteLine("Connected");
 
