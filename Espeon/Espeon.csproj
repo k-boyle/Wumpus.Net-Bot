@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Finite.Commands.Core" Version="0.2.0-dev-00008" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Wumpus.Net-master\src\Wumpus.Net.Bot\Wumpus.Net.Bot.csproj" />
+    <ProjectReference Include="..\..\Wumpus.Net-master\src\Wumpus.Net.Core\Wumpus.Net.Core.csproj" />
+    <ProjectReference Include="..\..\Wumpus.Net-master\src\Wumpus.Net.Gateway\Wumpus.Net.Gateway.csproj" />
+    <ProjectReference Include="..\..\Wumpus.Net-master\src\Wumpus.Net.Rest\Wumpus.Net.Rest.csproj" />
+  </ItemGroup>
+
+</Project>
