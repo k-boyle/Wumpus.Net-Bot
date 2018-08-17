@@ -40,7 +40,7 @@ namespace Espeon.Interactive.Paginator
             var embed = BuildEmbed();
             var message = await Context.Client.CreateMessageAsync(Context.Channel.Id, new CreateMessageParams
             {
-                Content = new Utf8String(_pager.Content),
+                Content = new Utf8String("."),
                 Embed = embed
             });
             Message = message;
@@ -100,8 +100,8 @@ namespace Espeon.Interactive.Paginator
                 //await _interactive.ReplyAndDeleteAsync(Context, Options.InformationText, timeout: Options.InfoTimeout);
                 return false;
             }
-            
-            await Context.Client.DeleteReactionAsync(Context.Channel.Id, Message.Id, emote.Name);
+
+            await Context.Client.DeleteReactionAsync(Message.ChannelId, Message.Id, Context.User.Id, emote.Name);
             await RenderAsync().ConfigureAwait(false);
             return false;
         }
@@ -121,7 +121,7 @@ namespace Espeon.Interactive.Paginator
             {
                 var m = await Context.Client.ModifyMessageAsync(Context.Channel.Id, Message.Id, new ModifyMessageParams
                 {
-                    Content = new Utf8String("1"),
+                    Content = new Utf8String("."),
                     Embed = embed
                 });
             }
