@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Finite.Commands.Core" Version="0.2.0-dev-00008" />
+    <PackageReference Include="Finite.Commands.Core" Version="0.2.0-dev-00012" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,9 +1,14 @@
-﻿using Espeon.Modules;
+﻿using Espeon.Interactive;
+using Espeon.Modules;
 using Finite.Commands;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Voltaic;
+using Voltaic.Logging;
 using Wumpus.Bot;
+using Wumpus.Net;
 
 namespace Espeon
 {
@@ -14,10 +19,15 @@ namespace Espeon
 
         private async Task MainAsync()
         {
-            var client = new WumpusBotClient()
+            var client = new WumpusBotClient(restRateLimiter: new DefaultRateLimiter(), logManager: new LogManager(LogSeverity.Verbose))
             {
                 Authorization = new AuthenticationHeaderValue("Bot", Environment.GetEnvironmentVariable("Espeon")),
             };
+
+            var services = new ServiceCollection()
+                .AddSingleton<InteractiveService>()
+                .AddSingleton(client)
+                .BuildServiceProvider();
 
             var commands = new CommandServiceBuilder<EspeonContext>()
                 .AddPipeline((ctx, next) =>
@@ -40,8 +50,12 @@ namespace Espeon
                 {
                     Console.WriteLine("Message received");
 
-                    var context = new EspeonContext(client.Rest, message, commands);
-                    await commands.ExecuteAsync(context, null);
+                    if (message.Author.Bot.IsSpecified) return;
+                    if (!message.Content.StartsWith(new Utf8String("!"))) return;
+
+                    var channel = await client.Rest.GetChannelAsync(message.ChannelId);
+                    var context = new EspeonContext(client.Rest, message, channel, commands);
+                    await commands.ExecuteAsync(context, services);
                 };
             }
             catch (Exception e)

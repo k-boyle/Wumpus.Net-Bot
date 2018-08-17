@@ -10,12 +10,16 @@ namespace Espeon.Modules
 
         public Message Message { get; }
         public WumpusRestClient Client { get; }
+        public User User { get; }
+        public Channel Channel { get; set; }
         public string Author { get; }
 
-        public EspeonContext(WumpusRestClient client, Message message, CommandService<EspeonContext> commands)
+        public EspeonContext(WumpusRestClient client, Message message, Channel channel, CommandService<EspeonContext> commands)
         {
             Client = client;
             Message = message;
+            User = Message.Author;
+            Channel = channel;
             _message = Message.Content.ToString();
             Author = message.Author.ToString();
             Commands = commands;
