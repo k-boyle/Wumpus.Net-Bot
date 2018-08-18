@@ -19,16 +19,15 @@ namespace Espeon
 
         private async Task MainAsync()
         {
-            var client = new WumpusBotClient(restRateLimiter: new DefaultRateLimiter(), logManager: new LogManager(LogSeverity.Verbose))
+            var manager = new LogManager(LogSeverity.Verbose);
+
+            var client = new WumpusBotClient(restRateLimiter: new DefaultRateLimiter(), logManager: manager)
             {
                 Authorization = new AuthenticationHeaderValue("Bot", Environment.GetEnvironmentVariable("Espeon")),
             };
 
-            var services = new ServiceCollection()
-                .AddSingleton<InteractiveService>()
-                .AddSingleton(client)
-                .BuildServiceProvider();
-
+            manager.Output += message => Console.WriteLine(message);
+            
             var commands = new CommandServiceBuilder<EspeonContext>()
                 .AddPipeline((ctx, next) =>
                 {
@@ -40,16 +39,18 @@ namespace Espeon
                 .AddModule<Commands>()
                 .BuildCommandService();
 
-           _ = Task.Run(async () => { await client.RunAsync(); });
+            var services = new ServiceCollection()
+                .AddSingleton<InteractiveService>()
+                .AddSingleton(client)
+                .AddSingleton(commands)
+                .BuildServiceProvider();
 
-            Console.WriteLine("Connected");
+            _ = Task.Run(async () => { await client.RunAsync(); });
 
             try
             {
                 client.Gateway.MessageCreate += async message =>
                 {
-                    Console.WriteLine("Message received");
-
                     if (message.Author.Bot.IsSpecified) return;
                     if (!message.Content.StartsWith(new Utf8String("!"))) return;
 

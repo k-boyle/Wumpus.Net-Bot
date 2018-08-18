@@ -40,7 +40,6 @@ namespace Espeon.Interactive.Paginator
             var embed = BuildEmbed();
             var message = await Context.Client.CreateMessageAsync(Context.Channel.Id, new CreateMessageParams
             {
-                Content = new Utf8String("."),
                 Embed = embed
             });
             Message = message;
@@ -121,7 +120,6 @@ namespace Espeon.Interactive.Paginator
             {
                 var m = await Context.Client.ModifyMessageAsync(Context.Channel.Id, Message.Id, new ModifyMessageParams
                 {
-                    Content = new Utf8String("."),
                     Embed = embed
                 });
             }
