@@ -9,7 +9,7 @@ namespace Espeon
     {
         public Task EnterLockAsync(string bucketId, CancellationToken cancelToken)
         {
-            throw new Exception("I don't know what the fuck I'm doing :-)");
+            throw new Exception("I am a weeb and hate my life");
         }
 
         public void UpdateLimit(string bucketId, RateLimitInfo info)
